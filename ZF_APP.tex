@@ -1,0 +1,827 @@
+
+\input{ZF_code_config}
+
+%-----Hier beginnt das Dokument-----%
+\begin{document}
+\begin{multicols*}{2}
+
+\section{Sequenz}
+\underline{letztes Element} bestimmt Schleifenverhalten %highlight?
+\begin{lstlisting}
+if(statement_1, statement_2, statement_3);
+while(statement_1, statement_2, statement_3);
+for(init_1, init_2; check_1, check_2; calc_1, calc_2); 
+\end{lstlisting}
+
+\section{Deklarierung, Initialisierung \& Definition}
+\textbf{Deklarierung:} macht Namen und Typ bekannt
+\begin{lstlisting}
+    int a;
+\end{lstlisting}
+
+\textbf{Initialisierung:} erste Zuweisung
+\begin{lstlisting}
+    a = 2;
+    int b = 3;
+\end{lstlisting}
+
+\textbf{Definition:} reserviert Speicherplatz
+\vspace{0.5em}
+
+\subsection{Komplexe Deklaratoren}
+\begin{enumerate}
+\item Beim Bezeichner beginnen (von innen nach aussen)
+\item \texttt{() und []} vor \texttt{*}
+\end{enumerate}
+\begin{lstlisting}
+int *ap[10];    //Feld von int-Zeigern
+int *fp(int);   //Funktion mit int-Ptr return
+int (*pf)(int); //Ptr auf Funktion mit int arg
+int *(*x[10])(int)
+\end{lstlisting}
+\begin{enumerate}
+\item Array x von 10...
+\item * Zeiger auf...
+\item Funktionen...
+\item mit int Argument
+\item und int Zeiger als Rückgabewert
+\end{enumerate}
+
+\section{break, return, contiune, goto}
+\underline{break} bricht Schleife und Switch-Case ab\\
+\underline{return} springt aus der Funktion\\
+\underline{continue} springt ans Ende der Schleife\\
+\underline{goto} sprint zu angegebenem Label
+\begin{lstlisting}
+goto a;
+int b = 5; //not executed
+a: //jump here
+\end{lstlisting}
+
+\section{Typenspezifizierer}
+void,char,int,short,...
+
+\section{Typenqualifizierer}
+\underline{const} Erstellt eine schreibgeschützte Variable\\
+\underline{volatile} Weist den Compiler auf eine flüchtige Variable hin
+
+\section{sizeof(Typenspezifizierer) $\rightarrow$ size\_t byte}
+\begin{center}
+  \begin{tabularx}{\linewidth}{lcc}
+    Type & $ = $ & byte\\
+    \hline
+    uint8\_t, char, '3'  & $ = $ & 1 \\
+    \hline
+    uint16\_t & $=$ & 2\\
+    \hline
+    uint32\_t, int, float, pointer*, '3' + 3, 3.14f & $=$ & 4\\
+    \hline
+    uint64\_t, 3.1, double & $=$ & 8\\
+    \hline
+\end{tabularx}  
+\end{center}
+
+\vfill\null
+\columnbreak
+\section{Typengrössen C99}
+\includegraphics[width = \linewidth]{Bilder/Typengroessen_c99.png}
+\section{Speicherklasse}
+\begin{lstlisting}
+int a;
+extern int b;
+static int c;
+void f(int d, register int e){
+    auto int g;
+    int h;
+    static int i;
+    extern int j;
+    register int k;
+}
+\end{lstlisting}
+
+\begin{center}
+\small
+\begin{tabular}{cccc}
+\textbf{Name} & \textbf{Klasse} & \textbf{Bereich} & \textbf{Verknüpfung} \\
+\hline
+a & statisch  & Datei     & Extern \\
+b & statisch  & Datei     & nDef   \\
+c & statisch  & Datei     & Intern \\
+d & automatisch & block   & keine  \\
+e & automatisch & block   & keine  \\
+g & automatisch & block   & keine  \\
+h & automatisch & block   & keine  \\
+i & statisch    & block   & keine  \\
+j & statisch    & block   & nDef   \\
+k & automatisch & block   & keine  \\
+\end{tabular}
+\end{center}
+
+\underline{auto} Automatische Speicherdauer, Blockbereich \& keine Verknüpfung. Nur zulässig für Variablen innerhalb eines Blocks (ebenfalls Standard für jene).\\
+\underline{static(ausserhalb)} Interne Verknüpfung, nicht von anderen Dateien sichtbar.\\
+\underline{static(innerhalb)} Statische Speicherdauer, Variable wird nur einmal initialisiert und bleibt bestehen über mehrere Aufrufe.\\
+\underline{extern} Nur Deklaration der Variable, wird an anderer Stelle definiert. So kann auf externe Variablen zugegriffen werden.\\
+\underline{Funktionen} Können extern und static besitzen, mit derselben Funktion.
+
+\section{Kontrollstrukturen}
+\subsection{if-Schleife}
+\begin{multicols*}{2}
+\textbf{Normal}
+\begin{lstlisting}
+if(expression_1){
+    statement_1;
+    statement_2;
+} else if(expression_1){
+    statement_a;
+    statement_b;
+} else{
+    statement_else;
+}
+\end{lstlisting}
+\textbf{Kurz}
+\begin{lstlisting}
+if(expression_1)
+    single_statement;
+else if(expression_2)
+    single_statement;
+else single_statement;
+\end{lstlisting}
+\begin{lstlisting}
+if(expression_1)?
+    true_statement:
+    flase_statement;
+\end{lstlisting}
+\end{multicols*}
+
+\subsection{for-Schleife}
+Wiederholt die Schleife bis check \underline{false} zurückgibt.
+\begin{lstlisting}
+for(init; check; update){/*loop*/}
+\end{lstlisting}
+
+\subsection{while-Schleife}
+Wiederholt die Schleife bis check \underline{false} zurückgibt.
+\begin{lstlisting}
+while(check){/*loop*/}
+\end{lstlisting}
+
+\subsection{do-while-Schleife}
+Führt die Schleife einmal aus und wiederholt sie bis check \underline{false} zurückgibt.
+\begin{lstlisting}
+do{/*loop*/} while(check)
+\end{lstlisting}
+
+\subsection{switch-case}
+Ohne \underline{break} = fallthrough\\
+Expression muss eine \underline{Ganzzahl} sein.\\
+\underline{default} wird immer als letztes ausgeführt!
+\begin{lstlisting}
+switch(expression){
+    case 3: expression; //fallthrough
+    case 1:
+       expression; break;
+    case 5: expression; break;
+    default: break;
+}
+\end{lstlisting}
+
+\section{Typedef}
+Mit typedef kann man neue Typen erstellen (oder existierende einen anderen Namen geben). Diese haben immer die Form:
+\begin{lstlisting}
+typedef type typeName_t
+\end{lstlisting}
+\subsection{Normal}
+\begin{lstlisting}
+typedef float komma_t;
+\end{lstlisting}
+\subsection{Pointer}
+\begin{lstlisting}
+typedef int *int_ptr;
+int a = 5;
+int_ptr pa = &a;
+\end{lstlisting}
+\subsection{String}
+\begin{lstlisting}
+typedef char *string_ptr;
+string_ptr strg = "Hello World!"
+printf("%s\n",strg);
+\end{lstlisting}
+\subsection{Funktionen}
+\begin{lstlisting}
+typedef int (function)(int,int);
+function add;
+int add(int a, int b){
+    return a+b;
+}
+\end{lstlisting}
+\subsection{Struct,Union,Enum}
+\begin{lstlisting}
+typedef struct { int val; } node_t;
+node_t myNode = {.val = 10 };
+printf("%i\n",myNode.val);
+\end{lstlisting}
+\begin{lstlisting}
+typedef union {
+   uint8_t a;
+   uint8_t b;
+} bytes_u;
+bytes_u number = {.a = 8};
+\end{lstlisting}
+\begin{lstlisting}
+typedef enum {
+    EAST, NORTH, WEST, SOUTH
+}dirct_e;
+dirct_e dir = NORTH;
+\end{lstlisting}
+
+\section{Speicher}
+\subsection{RAM Random Accsess Memory}
+es kann auf jede Speicherzelle (Byte-Weise) direkt zuzugreiffen speichert Variablen, Stack, Heap
+\begin{itemize}
+    \item schnelles lesen \& schreiben
+    \item Daten sind nicht persistent bei Stromunterbruch (flüchtig)
+\end{itemize}
+\textbf{Stack:} Stappel von Elementen (Werte, Funktionen, etc.; nach dem LIFO-Prinzip (Last In, First Out) → zuletzt hinzugefügte Element wird als erstes wieder entfernt\\
+\textbf{Heap:} Speicherplatz für dynamische Speicherverwaltung (für Daten deren Grösse / "Lebensdauer"noch nicht bekannt sind) $\rightarrow$ malloc
+\subsection{Flash}
+nichtflüchtiger Speicher (behält Daten bei Stromunterbruch)
+\begin{itemize}
+    \item konstante Daten
+    \item kann nur Blockweise beschrieben / gelesen werden
+    \item wird typischerweise während Laufzeit nicht verändert beschrieben des Speicher $\rightarrow$ flashen
+\end{itemize}
+\section{Speicherzugriff}
+\begin{center}
+    \includegraphics[width = 0.5\linewidth]{Bilder/RAM.png}
+\end{center}
+$\Rightarrow$Datenbus ist bi-direktional\\
+\textbf{lesen:}\\
+CPU $\rightarrow$ Adrese and Adressbus\\
+RAM $\rightarrow$ Wert an Datenbus\\
+CPU $\rightarrow$ liest den Wert an der Adresse\\
+\textbf{schreiben:}\\
+CPU $\rightarrow$ Adrese and Adressbus\\
+CPU $\rightarrow$ zu schriebende Wert an Datenbus\\
+CPU $\rightarrow$ R-W $\Rightarrow$ W\\
+RAM $\rightarrow$ Wert and Adresse\\
+Memory Mapped I/O: I/O direkt mit dem Bus verbunden (sonst
+über einen Port)
+
+
+\section{Dynamischer Speicher}
+\subsection{Malloc}
+Wenn erfolgreich für n-Elemente Speicher reserviert worden ist, wird die 1.Adresse des Speicherblocks zurückgegeben. Falls nicht genügend Speicherplatz vorhanden ist, wird NULL zurückgegeben.
+\begin{lstlisting}
+void *malloc(size_t size);//Functionprototype
+uint8_t *ptr = malloc(n* sizeof(uint8_t));
+\end{lstlisting}
+\subsection{Calloc}
+Selbe Funktion wie malloc, jedoch muss die Anzahl und die Grösse separat mitgegeben werden und der \underline{Reservierte Speicher mit 0 Initalisiert.}
+\begin{lstlisting}
+void *calloc(size_t ammount,size_t size); 
+
+uint8_t *ptr = calloc(n,sizeof(uint8_t));
+\end{lstlisting}
+\subsection{Realloc}
+Erweitert den reservierten Speicher und gibt bei Erfolg die 1.Adresse des neuen Speicherblocks zurück, ansonsten NULL. Aus diesem Grund muss der \underline{Rückgabewert auf NULL überprüft werden.}
+\begin{lstlisting}
+void *realloc(void *ptr, size_t size);
+
+uint8_t *tmp = realloc( ptr, n );
+if(tmp != NULL) ptr = tmp; // Wichtig!!!
+\end{lstlisting}
+\subsection{Free}
+Gibt den Speicher wieder frei. Der Pointer \underline{muss} auf die \underline{1.Adresse} zeigen. (Zeigerarithmetik nie mit ptr ausführen)
+\begin{lstlisting}
+void free(void *ptr);
+if(ptr != NULL){ // Wichtig!!!
+free(ptr);
+}
+\end{lstlisting}
+
+\section{Typcast}
+\subsection{Implizite Konvertierung}
+Wird vom Compiler automatisch gemacht, erzeugt eine Warnung.
+\begin{lstlisting}
+int var = 'A' // from char to int
+\end{lstlisting}
+\subsection{Explizite Konvertierung}
+Wird mit einem cast-Operator gemacht werden, die saubere Variante.
+\begin{lstlisting}
+int var = (int)'A'; from char to int
+\end{lstlisting}
+
+\section{Zeichenketten}
+Strings können auf zwei unterschiedliche Varianten gespeichert werden. Die Ausgabe unterscheidet sich nicht, jedoch die Funktionsweise.
+\subsection{Definition als Pointer}
+Wenn ein String als Pointer abgespeichert wurde, ist der Bezeichner (prt) veränderbar. Jedoch können die \underline{Elemente nicht verändert} werden.
+\begin{lstlisting}
+char *str = "Hallo";
+str = str + 2;  //Zeigt nun auf erstes 'l'
+char ch = "Hallo"[1]; // ch = a (lesen)
+str[0] = 'x';   //FEHLER (schreiben)
+*(str+2) = 'x'; //FEHLER
+sizeof(str);    // = 4 (32bit Adresse)
+\end{lstlisting}
+Zudem hat der String bei der Definition als Pointer beim Aufruf des sizeof-Operators die \underline{Grösse 4} (da es ein Pointer ist) und nicht die tatsächliche Länge des Strings.
+\subsection{Definition als Array}
+Wenn ein String als Array abgespeichert wurde,ist der Bezeichner (ptr) \underline{nicht veränderbar.} Jedoch können die Elemente verändert werden.
+\begin{lstlisting}
+char str[] = "Hallo"; // 'H','a',..,'o','\0'
+str[0] = 'x'    // 'H' wird durch 'x' ersetzt
+printf("%c",*(str+1)); // print 'a'
+str = str + 2;  //FEHLER
+sizeof(str);    // = 6 (Array + '\0')
+\end{lstlisting}
+Bei der Definition als Array ergibt sich bei Aufruf des sizeof-Operators die \underline{Grösse der Zeichenkette + 1}.
+\subsection{2-Dimensionale char Arrays}
+Mit dieser Methode müssen alle Zeilen dieselbe Länge haben, auch wenn die nicht gebraucht werden.
+\begin{lstlisting}
+//3 Namen (Zeilen) mit je 12 Zeichen (Spalten)
+char names[3][12] = {"Urs","Maria","Tom"};
+sizeof(names);  // = 36 (3 * 12 char)
+\end{lstlisting}
+\subsection{Array von char-Pointern}
+Mit dieser Methode können Zeilen eine unterschiedliche Länge haben, somit ist dies speichereffizienter.
+\begin{lstlisting}
+// 3 Namen mit unterschiedlicher Anz. Zeichen
+char *names[3] = {"Urs","Anna-Maria","Tom"};
+sizeof(names)   // = 12 (3 * 32bit Adresse)
+\end{lstlisting}
+
+\section{Pointer}
+\subsection{Pointer Grafisch}
+\includegraphics[width = 0.4\linewidth]{Bilder/Pointer_grafisch.png}
+
+\subsection{Zeigerarithmetik}
+Zeigerarithmetik kann nur mit Array-Pointern im selben Array durchgeführt werden, da ansonsten undefiniertes Verhalten auftritt.\\
+Um den Pointer eines Arrays zu erhalten, gibt es folgende Möglichkeiten:
+\begin{lstlisting}
+int *p1 = &a[2];//pointing at 3.element(2)
+int *p2 = a;    //pointing at 1.element(0)
+\end{lstlisting}
+Mit diesen Zeigern kann man folgende Operationen durchführen:
+\begin{enumerate}
+    \item Differenz zwischen Pointern (p1 - p2)
+    \item Ganzzahl Addition
+    \item Ganzzahl Subtraktion
+\end{enumerate}
+\begin{center}
+    \includegraphics[width = 0.8\linewidth]{Bilder/Zeigerarithmetik.png}
+\end{center}
+Die Operatoren * und $--$ lassen sich in derselben Art und Weise kombinieren wie * und $++$.
+
+\subsection{Pointer auf Pointer}
+Wird verwendet, um den Wert eines Pointers aus einer Funktion zu bearbeiten.
+\begin{lstlisting}
+int a = 3;
+int *ptr1 = &a;
+int **ptr2 = &ptr1;
+printf("%i\n",**ptr2); // = 3
+\end{lstlisting}
+
+\subsection{Pointer auf Funktion}
+Um eine Funktion einer Funktion als Parameter übergeben zu können, muss ein Pointer dafür angelegt werden. Somit zeigt der Pointer auf dieselbe Adresse wie die Funktion selbst.
+\begin{lstlisting}
+int add(int x, int y){retrun x+y;}
+int (*foo)(int,int) = add;
+printf("%i\n", foo(3,4));   // = 7
+
+// array von funktionspointer
+int(*fpa[4])(float) = {qux};
+// Funktion for Funktionspointer im array
+int qux (float);
+
+int (*bum(void))(float);
+*bum(void);// Funktion mit void Argument und Funktionspointer auf
+int foo (float); // als Rueckgabewert
+\end{lstlisting}
+
+\subsection{const Pointer}
+\begin{lstlisting}
+[type] *ptr;      //Pointer mit Typ
+const [type] *ptr;//Wert ist nicht aenderbar
+[type] *const ptr;//Adresse ist nicht aenderbar
+\end{lstlisting}
+
+\section{Build}
+\begin{enumerate}
+    \item main.c $\rightarrow$ \textbf{Präprozessor} $\rightarrow$ Vorverarbeiteter Quellcode
+    \item \textbf{Compiler} $\rightarrow$ Object-Datei, main.o
+    \item \textbf{linker} $\rightarrow$ ausführbare Datei, program.axf
+\end{enumerate}
+
+\section{Präprozessor}
+\subsection{\#include}
+'code.h' muss in 'main.c' und 'code.c' inkludiert werden.
+\begin{lstlisting}
+#include <stdio.h>  //Systemdateien
+#include <stdint.h>
+#include <string.h> 
+#include "board.h"  //lokale Dateien
+\end{lstlisting}
+\subsection{\#define}
+Werden vom Präprozessor textuell ersetzt.\\
+Einfache Makros werden verwendet, um Konstanten namentlich im Code zu verwenden.
+\begin{lstlisting}
+#define PI 3.141592
+float area = PI*radius*radius;
+\end{lstlisting}
+Makrofunktionen haben Parameter, welche in die Funktion eingesetzt werden. Die Funktion muss immer mit genug \underline{Klammern} versehen sein um zufälliges Verhalten zu vermeiden.
+\begin{lstlisting}
+#define ADD(a,b) ((a) + (b))
+#define MAX(x,y) ((x) > (y) ? (x) : (y))
+int c = ADD(4*5,7);     
+int max = MAX(t++,7);//t zweimal inkrementiert
+\end{lstlisting}
+\subsection{\#undef}
+Mit \#undef kann ein \#define aufgelöst werden.
+\subsection{Header-Guard}
+Haltet den Präprozessor davon ab, eine Header-Datei mehrmals zu inkudieren.
+\begin{lstlisting}
+#ifndef _INCLUDE_H_
+#define _INCLUDE_H_
+/* ... include.h declereations here ... */
+#endif
+\end{lstlisting}
+Wichtig zu beachten ist, das \#ifndef und \#ifdef nur auf \#define achtet und \underline{nicht auf Variablen}
+\subsection{\#if}
+Mit \#if, \#elif und \#endif kann eine Bedingte Kompilierung erzeugt werden.
+\begin{lstlisting}
+#if defined(WIN32)
+    /* Code */
+#elif defined(LINUX)
+    /* Code */
+#endif
+\end{lstlisting}
+\subsection{\# \& \#\# Operatoren}
+\# Wandelt Makroargument in Zeichenkettenliteral um.
+\begin{lstlisting}
+#define PRINT_INT(n) printf(#n" = %d\n",n)
+PRINT_INT(i/j);             //Makro Aufruf
+printf("i/j"" = %d\n",i/j); //Praeprozessor
+printf("i/j = %d\n",i/j);   //Nach Compiler
+\end{lstlisting}
+\#\# Fügt Tokens zusammen.
+\begin{lstlisting}
+#define paster(n) printf("id"#n" = %d", id##n)
+paster(9);                     //Makro Aufruf
+printf("id" "9" " = %d",id9);  //Praeprozessor
+printf("id9 = %d",id9);        //Nach Compiler
+\end{lstlisting}
+\subsection{Aufgabe}
+Der Präprozessor wird vor dem eigentlichen Kompilieren ausgeführt. Er verarbeitet sogenannte Präprozessor-Direktiven, die mit \# beginnen.
+Er erstellt eine „Vorverarbeitete“ Version des Codes, z.B. ersetzt er \#include $<$stdio.h$>$ durch den tatsächlichen Inhalt der Datei.
+\subsection{Typische build Fehler}
+\textit{Fehlende Header-Dateien:} fatal error: myheader.h: No such file or directory\\
+\textit{Makro-Probleme:} falsche oder rekursive Makrodefinitionen\\
+\textit{Syntaxfehler in Direktiven}
+
+\section{Compiler}
+Der Compiler übersetzt den vorverarbeiteten Quellcode in Zwischencode oder Maschinencode (z.B. in Objektdateien .o oder .obj).
+\subsection{Typische build Fehler}
+\textit{Syntaxfehler:} fehlendes Semikolon, falsche Klammern\\
+\textit{Typfehler:} int = char* ohne Cast\\
+\textit{Unzulässige Operationen:} Division durch 0 (wenn zur Compilezeit berechenbar)\\
+\textit{Nicht deklarierte Variablen oder Funktionen}\\
+\textit{Mehrdeutige oder widersprüchliche Deklarationen}\\
+
+
+\section{Linker}
+Der Linker nimmt die vom Compiler erzeugten Objektdateien und verbindet sie zu einer ausführbaren Datei. Dabei löst er Symbolreferenzen auf, also z.B. wo eine Funktion oder Variable definiert ist.
+Er fügt auch Standardbibliotheken und evtl. eigene Bibliotheken hinzu.
+
+\subsection{Typische build Fehler}
+\textit{Nicht definierte Symbole:} undefined reference to 'main' oder printf\\
+\textit{Doppelt definierte Symbole:} multiple definition of 'myFunction'\\
+\textit{Fehlende Objektdateien oder Bibliotheken}\\
+\textit{Falsche Link-Reihenfolge}
+
+\section{Modularisierung}
+\begin{center}
+\includegraphics[width = 0.6\linewidth]{Bilder/Modularisierung.png}  
+\end{center}
+\begin{enumerate}
+    \item Gruppierung von zusammengehörigen Funktionen und Variabeln in einer Datei (strukturierter)
+    \item Quelldateien können separat kompiliert werden → bei grossen Projekten Zeitersparnisse in der Entwicklung
+    \item Funktionen lassen sich wiederverwenden
+\end{enumerate}
+
+\section{Structs}
+Mit Structs können Daten zusammengefasst werden. Die Reihenfolge im Speicher entspricht der Reihenfolge der Deklarierung.
+\begin{lstlisting}
+struct tag_name_s {
+    int a;
+    int *b;
+    float c;
+} var = {.a = 5, .b = &(var.a)};
+\end{lstlisting}
+Ohne Typedef können zwischen $\}$ und $;$ Variablen deklariert und initialisiert werden. Variablen können ebenfals wie folgt deklariert und initialisiert werden:
+\begin{lstlisting}
+struct tag_name_s var2 = {.a = 7, .c = 1.23};
+struct tag_name_s var3 = var2; //koppiert struct
+\end{lstlisting}
+
+\subsection{Pointer auf Structs}
+\begin{lstlisting}
+struct tag_name_s * ptr_s = &var2;
+int x = ptr_s -> a; // x = 7
+float y = (*ptr_s).c; // y = 1.23
+\end{lstlisting}
+
+\section{Unions}
+Gleich wie Struct: \texttt{=} Operator zum kopieren und können über \texttt{return} als Rückgabewert einer Funktion fungieren. Der Unterschied ist jedoch, dass die Daten an der selben Speicheradresse stehen. Aus diesem Grund kann nur immer ein Mitglied der Union initalisert werden.
+\begin{lstlisting}
+union tag_name_u{
+    uint16_t a;
+    struct {
+        uint8_t b;
+        uint8_t c;    
+    }byte;
+}var = {.a = 10};
+var.byte.c = 1;     // beschreiben eines bytes
+printf("%d\n",var.byte.b);  // = 10
+\end{lstlisting}
+Achtung! Beim zugreifen auf ein byte muss berücksichtigt werden wie gespeichert wird (little endian, kleines ende zuerst).
+
+\section{Bitfelder}
+Bitfelder können mittles Struct oder Union gemacht werden. Durch Standard garantierte Typen: \_Bool, int, unsigned int, signed int Bitfelder haben im üblichen Sinne keine Adressen $\rightarrow$ direkt speichern in Bitfeld mit scanf ist nicht erlaubt $\rightarrow$ keine Adressoperatoren wie \& möglich
+\begin{lstlisting}
+struct file_date {
+uint16_t day: 5;    // LSB
+uint16_t month: 4;
+uint16_t year: 7;   // MSB
+};
+struct file_date fd;
+fd.day = 28;
+fd.month = 12;
+fd.year = 8; /* represents 1988 */
+
+struct file_time {
+uint16_t: 5; /* not used */
+uint16_t minutes: 6;
+uint16_t hours: 5;
+} u = {.bits ={.minutes=1, .hours =1} };
+struct s {
+uint16_t a: 4;
+uint16_t : 0; /* 0-length bit-field */
+uint16_t b: 8;
+}; 
+// 0 gibt compiler an -> darauffolgende Element am Anfang einer Sepichereinheit (32 bit -> beginn einer 32 bit auch wenn nur 8 bit)
+\end{lstlisting}
+\section{Ausrichtungsanforderung}
+Datentyp müss auf einer Speicheradresse leigen, die ein Vielfaches von sich selbst ist\\
+int32\_t $\rightarrow$ 4 Bytes $\rightarrow$ Adresse durch vier Teilbar $\rightarrow$ 0x100, 0x104, ... 2 Bytes $\rightarrow$ 0x100, 0x102, 0x104, ...\\
+\textbf{word:} natürliche Verarbeitungsbreite (in Bytes) der CPU
+typischerweise 32 Bit oder 64 Bit
+\subsection{Padding (16bit)}
+Compiler fügt zusätzliche unbenannte Datenelemente ein
+kann auch am Ende einer Struktur passieren um diese abzuschliessen $\rightarrow$ immer der Grösse nach ordnen (ab- oder aufsteigend)
+\begin{lstlisting}
+struct s2 {
+char a;
+uint16_t b;
+}
+\end{lstlisting}
+\begin{center}
+\includegraphics[width = \linewidth]{Bilder/Bitfelder_Struct_loecher.png}   
+\end{center}
+    
+
+
+\section{Verkettete Listen}
+\includegraphics[width = 0.4\linewidth]{Bilder/Verkettere_listen_Grafisch.png}
+\subsection{Konten}
+\begin{lstlisting}
+struct node_s{
+    int value;
+    struct node_s *next;
+}
+struct node_s *first = NULL;
+\end{lstlisting}
+\subsection{Knoten erstellen}
+\begin{lstlisting}
+struct node_s *new_node;
+new_node = malloc(sizeof(struct node_s));
+
+new_node->value = 10;
+\end{lstlisting}
+\subsection{Knoten einfügen}
+\begin{lstlisting}
+first = add_to_list(first,10);
+\end{lstlisting}
+\begin{lstlisting}
+struct node_s *add_to_list(struct node_s *list, int n){
+    struct node_s *new_node;
+    new_node = malloc(sizeof(struct node_s));
+    if(new_node == NULL) {
+        printf("Error:no memory available\n");
+        exit( EXIT_FAILURE );
+    }
+    new_node ->value = n;
+    new_node ->next = list;
+    return
+    new_node;
+}
+\end{lstlisting}
+
+\vfill\null
+\columnbreak
+
+\subsection{Liste durchsuchen}
+\begin{lstlisting}
+struct node_s *search_list(struct node_s *list, int n) {
+    struct node_s *p;
+    for(p = list; p != NULL; p = p->next) {
+        if(p->value == n) {
+            return p;
+        }
+    }
+    return NULL;
+}
+\end{lstlisting}
+\subsection{Knoten löschen}
+\begin{lstlisting}
+struct node_s *delete_from_list(struct node_s *list, int n){
+    struct node_s *cur, *prev;
+
+    for(cur = list, prev = NULL;
+        cur != NULL && cur->value != n;
+        prev = cur, cur = cur->next);
+    if(cur == NULL)    //n not found
+        retrun list;
+    if(prev == NULL)
+        list == list->next;
+    else
+        prev->next = cur->next;
+    free(cur);
+    return list;
+}
+\end{lstlisting}
+\section{Reaktive Systeme}
+System, dass auf äussere in beliebiger Reihenfolge auftretende Ereignisse, innerhalb einer gewissen Zeit, durch vorgegebenes Verhalten reagiert\\
+\begin{itemize}
+    \item Nicht-blockierende Erkennung von Ereignis-Typen $\rightarrow$ Funktion, z.B. check\_timeout\_expired
+    \item Event Handler (aka Callbacks) für die Verarbeitung von Events $\rightarrow$ Funktionszeiger, z.B. handle\_timeout, aufgerufen aus check\_timeout\_expired
+    \item Mainloop für die Disposition (engl. Dispatching): Ereignis $\rightarrow$ Event-Handler (Reaktion) $\rightarrow$ erkennt Ereignisse, führt Event-Handler aus
+\end{itemize}
+\includegraphics[width = \linewidth]{Bilder/FSM.png}
+
+\vfill\null
+\columnbreak
+
+\subsection{Expliziter Mainloop (Superloop)}
+Die main-Funktion läuft immer innerhalb einer Unendlichschleife werden Ereignisse abgehandelt
+$\rightarrow$ dadurch kann blockierender Code vermieden werden\\
+Reaktion auf ein Ereignis abhängig von: Ereignis-Typ und Kontext (Zustand)\\
+Alternative zu Superloop: Multi-Threading\\
+\includegraphics[width = \linewidth]{Bilder/expliziter_Mainloop.png}
+
+\subsection{Event-Handler}
+\includegraphics[width = \linewidth]{Bilder/Event_Handler.png}
+
+\subsection{Zustandsübergangstabelle}
+\includegraphics[width = \linewidth]{Bilder/Zustandstabelle.png}
+
+
+\section{Mainloop}
+Klassischer Mainloop aufbau.
+\begin{lstlisting}
+/* main.c */
+#include "main_loop.h"
+//more includes...
+//defines...
+int main(void){
+    init(); //board periphery
+    timer_init( handle_timeout ); //callback
+    //weitere Initalisierungen...
+    
+    main_loop();    //never leave
+    return 0;
+}
+\end{lstlisting}
+
+\vfill\null
+\columnbreak
+
+\begin{lstlisting}
+/* main_loop.c */
+static void (*timeout_cb) (void) = NULL;
+void main_loop(void) {
+    while(true) {
+      if(timer_expired() && timeout_cb !=NULL)
+        timeout_cb(); //invoke callback
+    }
+}
+\end{lstlisting}
+
+\section{Superloop Template}
+\subsection{main.c}
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include "board.h"
+#include "main_loop.h"
+#include "timer.h"
+#include "buttons.h"
+
+void handle_timeout() {
+    printf("handle_timeout called!\n");
+}
+void handle_button(uint8_t btn_no, bool b) {
+    printf("handle_button(sw%u,%s) called!\n",
+            btn_no, b? "true":"false");
+}
+int main(void) {
+    init(); //initialize board periphery
+    timer_init( handle_timeout );
+    button_init( 0, handle_button );
+    button_init( 1, handle_button );
+    button_init( 2, handle_button );
+    
+    main_loop(); //never returns
+    return 0;
+}
+\end{lstlisting}
+\subsection{timer.h}
+\begin{lstlisting}
+#ifndef TIMER_H_
+#define TIMER_H_
+
+//returns true if timestamp a is before b
+#define BEFORE_U32(a, b) ((uint32_t)((a)-(b)) > 0x80000000u)
+//returns true if timestamp a is after b
+#define AFTER_U32(a, b) ((uint32_t)((a)-(b)) < 0x80000000u)
+
+//timer callback init function 
+void timer_init( void (*cb) (void) );
+
+// function called in main_loop 
+// and then to call its event handler
+void check_timer_expired( void );
+
+#endif /* TIMER_H_ */
+\end{lstlisting}
+\subsection{timer.c}
+\begin{lstlisting}
+#include <stdio.h>
+#include "board.h"
+#include "timer.h"
+
+static uint32_t next_timeout = 0;
+// function pointer to store timeout callback
+static void (*timeout_cb) (void) = NULL;
+
+void timer_init( void (*cb) (void) ) {
+    next_timeout = 0;
+    timeout_cb = cb;
+}
+void check_timer_expired( void ) {
+    // if ( (int32_t)(time_get_ms() - next_timeout) >= 0 ) {
+    if(AFTER_U32(time_get_ms(),next_timeout)){
+        next_timeout = time_get_ms() + 1000;
+        if( timeout_cb != NULL )
+            timeout_cb(); //invoke callback
+    }
+}
+\end{lstlisting}
+\subsection{main\_loop.h}
+\begin{lstlisting}
+#ifndef MAIN_LOOP_H_
+#define MAIN_LOOP_H_
+void main_loop(void);
+#endif /* MAIN_LOOP_H_ */
+\end{lstlisting}
+\subsection{main\_loop.c}
+\begin{lstlisting}
+#include <stdbool.h>
+#include "main_loop.h"
+#include "timer.h"
+#include "buttons.h"
+
+void main_loop(void) {
+    while(true) {
+        check_timer_expired();
+        check_buttons();
+    }
+}
+\end{lstlisting}
+
+
+\section{Anhang}
+\subsection{string.h}
+\includegraphics[width = \linewidth]{Bilder/String_h.png}
+
+\subsection{Operatoren}
+\includegraphics[width = \linewidth]{Bilder/Operatoren.png}
+
+\subsection{Last Advice}
+\begin{center}
+\includegraphics[width = 0.8\linewidth]{Bilder/Writing_code.jpg}
+\end{center}
+
+
+
+\end{multicols*}
+\end{document}

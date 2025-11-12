@@ -1,0 +1,56 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{multicol}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{soul}
+\usepackage{setspace}
+\usepackage{tabularx}
+
+
+
+\geometry{top=1.8cm, bottom=1.8cm, left=0.8cm, right=0.8cm }
+\pagestyle{fancy}
+\fancyhead[L]{HSLU T\&A - APP Zusammenfassung}
+\fancyhead[R]{Linus Brehm}
+\fancyfoot[C]{\thepage}
+\fancyfoot[R]{\today}
+
+\setlength{\columnsep}{0.4cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}   % Vertical space between paragraphs
+
+\sethlcolor{yellow!50}
+
+% Headings formatting
+\titleformat{\section}{\large\bfseries}{}{0em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+% Syntax: \titlespacing{command}{left}{before-sep}{after-sep}
+\titlespacing{\section}{0pt}{0.5ex}{0.2ex}
+\titlespacing{\subsection}{0pt}{0.4ex}{0.1ex}
+
+% Code formatting
+\lstset{
+  language=C,                         % Set to C or C++ depending on your code
+  basicstyle=\ttfamily\small,         % Monospaced font
+  backgroundcolor=\color{gray!8},   % Light gray background
+  numbers=left,                  % Add line numbers on the left
+  numberstyle=\tiny\color{gray},% Style of line numbers
+  numbersep=5pt,                 % Distance from code
+  commentstyle=\color{green!60!black},% Comments green
+  keywordstyle=\color{blue},          % Keywords (data types, control words)
+  stringstyle=\color{violet},         % Strings (optional)
+  breaklines=true,                    % Auto-wrap long lines
+  showstringspaces=false,             % Don't show spaces in strings
+  morekeywords={uint8_t, uint32_t, bool, true, false}, % Custom keywords
+}
+
+
